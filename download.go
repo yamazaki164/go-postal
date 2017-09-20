@@ -4,30 +4,21 @@ import (
 	"io"
 	"net/http"
 	"os"
-	"path/filepath"
 )
 
-const (
-	zipfileUrl = "http://www.post.japanpost.jp/zipcode/dl/oogaki/zip/ken_all.zip"
-	workingDir = "g:/works/tmp"
-)
-
-func zipfile() string {
-	return filepath.Join(workingDir, filepath.Base(zipfileUrl))
-}
-
-func downloadPostalZip() {
-	res, err := http.Get(zipfileUrl)
+func downloadPostalZip() error {
+	res, err := http.Get(config.ZipUrl)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	defer res.Body.Close()
 
-	file, err := os.Create(zipfile())
+	file, err := os.Create(config.Zipfile())
 	if err != nil {
-		panic(err)
+		return err
 	}
 	defer file.Close()
 
-	io.Copy(file, res.Body)
+	_, err = io.Copy(file, res.Body)
+	return err
 }

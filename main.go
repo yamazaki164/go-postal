@@ -3,30 +3,28 @@ package main
 import (
 	"encoding/csv"
 	"encoding/json"
+	"flag"
+	"fmt"
 	"io"
 	"io/ioutil"
-	"os"
 	"path/filepath"
 
 	"golang.org/x/text/encoding/japanese"
 )
 
-func writeJson(k1 string, p areaPostal) {
-	var rootDir = filepath.Join("c:/works/tmp/", k1)
+var (
+	config *Config
+)
 
-	_, err := os.Stat(rootDir)
-	if err != nil && os.IsNotExist(err) {
-		os.MkdirAll(rootDir, 0644)
-	}
-
+func writeJson(postalCodeShort string, p areaPostal) {
 	b, _ := json.Marshal(p)
-	ioutil.WriteFile(filepath.Join(rootDir, k1+".json"), b, 0644)
+	ioutil.WriteFile(filepath.Join(config.OutputDir, postalCodeShort+".json"), b, 0644)
 }
 
 func createJson() {
-	fin, err := os.OpenFile(zipfile(), os.O_RDONLY, 0755)
+	fin, err := openKenAllCsv()
 	if err != nil {
-		panic(err.Error())
+		panic(err)
 	}
 	defer fin.Close()
 
@@ -66,6 +64,22 @@ func createJson() {
 }
 
 func main() {
-	//downloadPostalZip()
+	configFileOpt := flag.String("c", "./postal.conf", "config file")
+	downloadOpt := flag.Bool("d", false, "download zip")
+	flag.Parse()
+
+	var err error
+	config, err = loadToml(*configFileOpt)
+	if err != nil {
+		fmt.Println(config)
+		panic(err)
+	}
+
+	if *downloadOpt == true {
+		if err := downloadPostalZip(); err != nil {
+			panic(err)
+		}
+	}
+
 	createJson()
 }
