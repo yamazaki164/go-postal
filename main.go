@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/csv"
 	"encoding/json"
+	"errors"
 	"flag"
 	"fmt"
 	"io"
@@ -64,8 +65,9 @@ func createJson() {
 }
 
 func main() {
-	configFileOpt := flag.String("c", "./postal.conf", "config file")
-	downloadOpt := flag.Bool("d", false, "download zip")
+	configFileOpt := flag.String("c", "./postal.conf", "/path/to/config/file")
+	downloadOpt := flag.Bool("download", false, "download zip. (default: not download)")
+	silentOpt := flag.Bool("s", false, "silent mode")
 	flag.Parse()
 
 	var err error
@@ -75,11 +77,21 @@ func main() {
 		panic(err)
 	}
 
+	if !config.IsValidConfig() {
+		panic(errors.New("invalid config settings"))
+	}
+
 	if *downloadOpt == true {
+		if !*silentOpt {
+			fmt.Println("#download " + config.ZipName())
+		}
 		if err := downloadPostalZip(); err != nil {
 			panic(err)
 		}
 	}
 
+	if !*silentOpt {
+		fmt.Println("#parse and generate postal json")
+	}
 	createJson()
 }

@@ -13,7 +13,7 @@ func downloadPostalZip() error {
 	}
 	defer res.Body.Close()
 
-	file, err := os.Create(config.Zipfile())
+	file, err := os.Create(config.ZipFile())
 	if err != nil {
 		return err
 	}
