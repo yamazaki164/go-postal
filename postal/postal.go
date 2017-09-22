@@ -1,4 +1,4 @@
-package main
+package postal
 
 import (
 	"strconv"
@@ -20,8 +20,8 @@ type Postal struct {
 	Flag2           bool   `json:"flag2"`
 	Flag3           bool   `json:"flag3"`
 	Flag4           bool   `json:"flag4"`
-	Status          int64  `json:"status"`
-	Reason          int64  `json:"reason"`
+	Status          int64  `json:"-"`
+	Reason          int64  `json:"-"`
 }
 
 func NewPostal(r []string) *Postal {
@@ -56,6 +56,6 @@ func NewPostal(r []string) *Postal {
 
 type Postals []*Postal
 
-type areaPostal map[string]Postals
+type AreaPostal map[string]Postals
 
-type PostalHash map[string]areaPostal
+type PostalHash map[string]AreaPostal
