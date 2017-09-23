@@ -12,14 +12,20 @@ import (
 	"golang.org/x/text/encoding/japanese"
 )
 
-func writeJson(postalCodeShort string, p postal.AreaPostal) {
-	b, _ := json.Marshal(p)
-	ioutil.WriteFile(filepath.Join(config.OutputDir, postalCodeShort+".json"), b, 0644)
+func writeJson(postalCodeShort string, p postal.AreaPostal) error {
+	b, e := json.Marshal(p)
+	if e != nil {
+		return e
+	}
+
+	return ioutil.WriteFile(filepath.Join(config.OutputDir, postalCodeShort+".json"), b, 0644)
 }
 
 func createJson(phash postal.PostalHash) {
 	for k, v := range phash {
-		writeJson(k, v)
+		if e := writeJson(k, v); e != nil {
+			panic(e)
+		}
 	}
 }
 

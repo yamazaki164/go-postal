@@ -17,7 +17,7 @@ func main() {
 	flag.Parse()
 
 	var err error
-	config, err = loadToml(*configFileOpt)
+	config, err = LoadToml(*configFileOpt)
 	if err != nil {
 		fmt.Println(config)
 		panic(err)

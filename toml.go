@@ -33,7 +33,7 @@ func (c *Config) IsValidConfig() bool {
 	return c.isValidDir(c.OutputDir) && c.isValidDir(c.WorkingDir)
 }
 
-func loadToml(file string) (*Config, error) {
+func LoadToml(file string) (*Config, error) {
 	var conf Config
 	if _, err := toml.DecodeFile(file, &conf); err != nil {
 		return &conf, err
