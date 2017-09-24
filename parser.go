@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/csv"
 	"encoding/json"
+	"errors"
 	"io"
 	"io/ioutil"
 	"path/filepath"
@@ -13,6 +14,10 @@ import (
 )
 
 func writeJson(postalCodeShort string, p postal.AreaPostal) error {
+	if p == nil {
+		return errors.New("nil pointer error")
+	}
+
 	b, e := json.Marshal(p)
 	if e != nil {
 		return e
@@ -22,6 +27,10 @@ func writeJson(postalCodeShort string, p postal.AreaPostal) error {
 }
 
 func createJson(phash postal.PostalHash) {
+	if phash == nil {
+		panic(errors.New("nil hash error"))
+	}
+
 	for k, v := range phash {
 		if e := writeJson(k, v); e != nil {
 			panic(e)

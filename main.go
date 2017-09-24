@@ -7,19 +7,24 @@ import (
 )
 
 var (
-	config *Config
+	config        *Config
+	configFileOpt *string
+	downloadOpt   *bool
+	silentOpt     *bool
 )
 
-func main() {
-	configFileOpt := flag.String("c", "./postal.conf", "/path/to/config/file")
-	downloadOpt := flag.Bool("download", false, "download zip. (default: not download)")
-	silentOpt := flag.Bool("s", false, "silent mode")
+func ParseFlags() {
+	configFileOpt = flag.String("c", "./postal.conf", "/path/to/config/file")
+	downloadOpt = flag.Bool("download", false, "download zip. (default: not download)")
+	silentOpt = flag.Bool("s", false, "silent mode")
 	flag.Parse()
+}
 
+func main() {
+	ParseFlags()
 	var err error
 	config, err = LoadToml(*configFileOpt)
 	if err != nil {
-		fmt.Println(config)
 		panic(err)
 	}
 
