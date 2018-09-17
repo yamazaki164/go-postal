@@ -1,6 +1,7 @@
 package main
 
 import (
+	"path/filepath"
 	"testing"
 )
 
@@ -18,7 +19,7 @@ func TestLoadToml(t *testing.T) {
 	if test1.ZipUrl != "" {
 		t.Fatal("illegal ZipUrl")
 	}
-	
+
 	test2, err2 := LoadToml("./test/dummy.conf")
 	if err2 != nil {
 		t.Fatal("config file not found")
@@ -30,7 +31,7 @@ func TestLoadToml(t *testing.T) {
 		t.Fatal("illegal WorkingDir")
 	}
 	if test2.ZipUrl != "http://www.post.japanpost.jp/zipcode/dl/oogaki/zip/ken_all.zip" {
-		t.Fatal("illegal ZipUrl")		
+		t.Fatal("illegal ZipUrl")
 	}
 }
 
@@ -39,7 +40,7 @@ func TestZipName(t *testing.T) {
 	if err != nil {
 		t.Fatal("config file not found")
 	}
-	
+
 	if test1.ZipName() != "ken_all.zip" {
 		t.Fatal("error on ZipName")
 	}
@@ -50,10 +51,10 @@ func TestZipFile(t *testing.T) {
 	if err != nil {
 		t.Fatal("config file not found")
 	}
-	if test1.ZipFile() != "\\path\\to\\working\\dir\\ken_all.zip" {
+	if filepath.ToSlash(test1.ZipFile()) != filepath.ToSlash("\\path\\to\\working\\dir\\ken_all.zip") {
 		t.Log(test1.ZipFile())
 		t.Fatal("error on ZipFile")
-	}	
+	}
 }
 
 func TestIsValidDir(t *testing.T) {
@@ -62,12 +63,12 @@ func TestIsValidDir(t *testing.T) {
 	if test1 == true {
 		t.Fatal("./test/dummydir exists")
 	}
-	
+
 	test2 := conf.isValidDir("./test")
 	if test2 == false {
 		t.Fatal("./test not found")
 	}
-	
+
 	test3 := conf.isValidDir("./test/dummy.conf")
 	if test3 == true {
 		t.Fatal("./test/dummy.conf is dir")
@@ -80,10 +81,10 @@ func TestIsValidConfig(t *testing.T) {
 	if test1 == true {
 		t.Fatal("invalid config")
 	}
-	
+
 	conf2 := &Config{
 		WorkingDir: "./test",
-		OutputDir: "./test",
+		OutputDir:  "./test",
 	}
 	test2 := conf2.IsValidConfig()
 	if test2 == false {
