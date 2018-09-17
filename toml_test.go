@@ -51,8 +51,8 @@ func TestZipFile(t *testing.T) {
 	if err != nil {
 		t.Fatal("config file not found")
 	}
-	if filepath.ToSlash(test1.ZipFile()) != filepath.ToSlash("\\path\\to\\working\\dir\\ken_all.zip") {
-		t.Log(test1.ZipFile())
+	if filepath.ToSlash(test1.ZipFile()) != "/path/to/working/dir/ken_all.zip" {
+		t.Log(filepath.ToSlash(test1.ZipFile()))
 		t.Fatal("error on ZipFile")
 	}
 }
