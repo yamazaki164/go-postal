@@ -1,6 +1,11 @@
 go-postal
 ====
 
+[![CircleCI](https://circleci.com/gh/yamazaki164/go-postal/tree/master.svg?style=svg)](https://circleci.com/gh/yamazaki164/go-postal/tree/master)
+[![codecov](https://codecov.io/gh/yamazaki164/go-postal/branch/master/graph/badge.svg)](https://codecov.io/gh/yamazaki164/go-postal)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+
 Overview
 
 郵便番号データ加工プログラム
