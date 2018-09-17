@@ -8,7 +8,7 @@ import (
 func TestOpenKenAllCsv(t *testing.T) {
 	config = &Config{}
 	_, err1 := openKenAllCsv()
-	if a, _ := regexp.MatchString("The handle is invalid", err1.Error()); !a {
+	if a, _ := regexp.MatchString("zip open error: ", err1.Error()); !a {
 		t.Log(err1)
 		t.Fatal("error on open ZipFile")
 	}

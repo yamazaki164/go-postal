@@ -13,7 +13,7 @@ const (
 func openKenAllCsv() (io.ReadCloser, error) {
 	zreader, err := zip.OpenReader(config.ZipFile())
 	if err != nil {
-		return nil, err
+		return nil, errors.New("zip open error: " + err.Error())
 	}
 
 	for _, f := range zreader.File {
